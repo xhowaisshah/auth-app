@@ -22,6 +22,7 @@ import { FormError } from "@/components/form-error";
 import { FormSuccess } from "@/components/form-success";
 import { login } from "@/actions/login";
 import { useSearchParams } from "next/navigation";
+import Link from "next/link";
 
 export const  LoginForm = () => {
     const SearchParams = useSearchParams();
@@ -88,6 +89,11 @@ export const  LoginForm = () => {
                                 <Input {...field} type="password" autoComplete="current-password" placeholder="Enter your password" />
                                 </FormControl>
                                 <FormMessage>{errors.password?.message}</FormMessage>
+                                <Button size={"sm"} variant={"link"} className="px-0 font-normal" asChild>
+                                    <Link href="/auth/forgot-password">
+                                        Forgot Password?
+                                    </Link>
+                                </Button>
                             </FormItem>
                         )}
                         />
