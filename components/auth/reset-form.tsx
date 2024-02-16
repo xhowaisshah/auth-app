@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState, useTransition } from "react";
 
-import { LoginSchema } from "@/schemas";
+import { ResetSchema } from "@/schemas";
 import {
 Form,
 FormControl,
@@ -20,33 +20,33 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { FormError } from "@/components/form-error";
 import { FormSuccess } from "@/components/form-success";
-import { login } from "@/actions/login";
+import { reset } from "@/actions/reset";
 
 
 export const  ResetFrom = () => {
     const [isPending, startTransition] = useTransition();
     const [error, setError] = useState<string | undefined>("");
     const [success, setSuccess] = useState<string | undefined>("");
-    const form = useForm<z.infer<typeof LoginSchema>>({
-        resolver: zodResolver(LoginSchema),
+    const form = useForm<z.infer<typeof ResetSchema>>({
+        resolver: zodResolver(ResetSchema),
         defaultValues: {
-            email: "",
-            password: "",
+            email: ""
         }
     });
 
     const { control , handleSubmit, formState } = form;
     const { errors } = formState;
 
-    const onSubmit =  (values: z.infer<typeof LoginSchema>)=> {
+    const onSubmit =  (values: z.infer<typeof ResetSchema>)=> {
         setError("");
         setSuccess("");
 
            startTransition(() => { 
-            login(values)
+            reset(values)
             .then((res)=> {
                 setError(res?.error)
                 setSuccess(res?.success)
+                res.success && form.reset()
             })
         });
     }
@@ -75,7 +75,7 @@ export const  ResetFrom = () => {
                     </div>
                     <FormError message={error}/>
                     <FormSuccess message={success}/>
-                    <Button disabled={isPending} type="submit" className="w-full">Login</Button>
+                    <Button disabled={isPending} type="submit" className="w-full">Send reset email</Button>
                 </form>
             </Form>
         </CardWrapper>
